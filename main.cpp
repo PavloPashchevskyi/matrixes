@@ -12,28 +12,12 @@
 #include <time.h>
 #include "matrix.h"
 
-#include <windows.h>
-
-#ifdef _DEBUG
-#include <crtdbg.h>
-#define _CRTDBG_MAP_ALLOC // enable generation of debug heap alloc map
-#define new new( _NORMAL_BLOCK, __FILE__, __LINE__) // redefine "new" to get file names in output
-#endif
-
 using namespace std;
 
 /*
  * 
  */
 int main(int argc, char** argv) {
-    #ifdef _DEBUG
-        _CrtSetReportMode( _CRT_WARN, _CRTDBG_MODE_FILE ); // enable file output
-         ofstream fout;
-         fout.open("memleaks.txt");
-	_CrtSetReportFile( _CRT_WARN, fout ); // set file to stdout
-	_CrtMemState _ms; 
-	_CrtMemCheckpoint(&_ms); // now forget about objects created before
-    #endif
     unsigned uRowsQ, uColumnsQ;
     double clause;
     double *clauses;
@@ -143,10 +127,6 @@ int main(int argc, char** argv) {
     catch(matrix_exception &me) {
         cerr<<me.errorCode()<<" "<<me.error()<<endl;
     }
-    #ifdef _DEBUG
-        _CrtMemDumpAllObjectsSince(&_ms); // dump leaks
-        fout.close();
-    #endif
     return 0;
 }
 
